@@ -1,0 +1,12 @@
+.NewLinkModal {
+    display: flex;
+    flex-direction: column;
+}
+
+.buttonBar {
+    width: 100%;
+    margin-top: 1rem;
+    display: flex;
+    flex-direction: row-reverse;
+    gap: 0.5rem;
+}
