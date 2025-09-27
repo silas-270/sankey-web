@@ -1,4 +1,4 @@
-.headerWrapper {
+.amountWrapper {
     font-size: 1.5rem;
     font-weight: bold;
     color: var(--text);
@@ -31,11 +31,28 @@
     align-items: center;
     justify-content: center;
     background-color: var(--bg);
-    cursor: pointer;
     transition: background ease-in-out 0.2s, color ease-in-out 0.2s;
 }
 
 .newEntryBtn:hover {
     background-color: var(--bg-light);
     color: var(--text);
+}
+
+.pieChartWrapper {
+    width: 100%;
+    aspect-ratio: 2;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    gap: 0.5rem;
+}
+
+.pieChartWidget {
+    height: calc(100% - 0.25rem);
+    aspect-ratio: 1;
+    background: var(--bg);
+    border-radius: 0.75rem;
+    padding: 1.5rem;
+    box-sizing: border-box;
 }

@@ -1,37 +1,11 @@
 import { useState, useCallback, useMemo } from "react";
 
-const testData = [
-    {
-        "source": "Source 1",
-        "target": "Budget 1",
-        "value": 30
-    },
-    {
-        "source": "Source 2",
-        "target": "Budget 1",
-        "value": 70
-    },
-    {
-        "source": "Source 1",
-        "target": "Budget 2",
-        "value": 70
-    },
-    {
-        "source": "Source 2",
-        "target": "Budget 2",
-        "value": 30
-    },
-    {
-        "source": "Budget 1",
-        "target": "Expense",
-        "value": 50
-    }
-]
+const testData = []
 
 // Custom Hook to manage the Sankey data
 const useSankey = (initialLinks = testData) => {
     const [links, setLinks] = useState(initialLinks);
-    
+
     // formatData is now a memoized value derived from `links`
     // It will automatically update whenever `links` changes.
     const formatData = useMemo(() => {
@@ -59,14 +33,25 @@ const useSankey = (initialLinks = testData) => {
     }, []);
 
     const updateLinkValue = useCallback((sourceId, targetId, newValue) => {
-        setLinks(currentLinks => currentLinks.map(link =>
-            link.source === sourceId && link.target === targetId
-                ? { ...link, value: newValue }
-                : link
-        ));
+        // If the new value is 0, we filter the link out of the array
+        if (newValue === 0) {
+            setLinks(currentLinks =>
+                currentLinks.filter(link => !(link.source === sourceId && link.target === targetId))
+            );
+        } else {
+            // Otherwise, we update the value of the specific link
+            setLinks(currentLinks =>
+                currentLinks.map(link =>
+                    link.source === sourceId && link.target === targetId
+                        ? { ...link, value: newValue }
+                        : link
+                )
+            );
+        }
     }, []);
 
     return {
+        rawData: links,
         formatData,
         addLink,
         updateNodeId,

@@ -1,4 +1,5 @@
 import { useEffect } from 'react'
+import { CustomNodeTooltip, CustomLinkTooltip } from './Tooltips/Tooltips'
 import { useSankeyDataStore } from '@services/zustand/renderdSankeyData'
 import { ResponsiveSankey } from '@nivo/sankey'
 
@@ -32,13 +33,14 @@ const SankeyDisplay = ({
     return (
         <ResponsiveSankey
             data={sankeyData}
-            margin={{ right: 40, left: 40 }}
+            nodeTooltip={CustomNodeTooltip}
+            linkTooltip={CustomLinkTooltip}
+            margin={{ right: 20, left: 20 }}
             align='start'
             nodeOpacity={1}
             nodeHoverOthersOpacity={0.35}
-            nodeThickness={15}
+            nodeThickness={25}
             nodeSpacing={21}
-            nodeBorderWidth={0}
             nodeBorderRadius={3}
             linkOpacity={0.5}
             linkHoverOthersOpacity={0.1}
@@ -46,6 +48,8 @@ const SankeyDisplay = ({
             enableLinkGradient={true}
             labelPosition='outside'
             labelOrientation='vertical'
+            motionConfig='default'
+            //animate={false}
             labelPadding={16}
             labelTextColor={{ from: 'color', modifiers: [['darker', 1]] }}
             onClick={(node) => onClickNode(node)}

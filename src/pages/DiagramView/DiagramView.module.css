@@ -1,0 +1,19 @@
+.DiagramView {
+    padding: 0.5rem;
+    box-sizing: border-box;
+    height: 100vh;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.headline {
+    font-size: 2.2rem;
+    margin-bottom: 1rem;
+    line-height: 1.2;
+    font-weight: bold;
+    color: var(--text);
+    padding: 1rem;
+    border-radius: 1rem;
+    border: 2px solid var(--bg);
+}

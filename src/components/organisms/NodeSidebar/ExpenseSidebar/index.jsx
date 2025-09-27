@@ -1,32 +1,25 @@
 import { useState } from 'react'
+import PieGraph from '@molecules/PieGraph'
 import Modal from '@molecules/Modal'
 import NewLinkModal from '@molecules/ModalTemplates/NewLinkModal'
 import ListSection from '../ListSection'
-import styles from './BudgetSidebar.module.css'
+import styles from './ExpenseSidebar.module.css'
 
-const BudgetSidebar = ({
+const ExpenseSidebar = ({
+    ids,
     nodeData,
     addLink,
-    updateNodeId,
+    delteLink,
     updateLinkValue
 }) => {
     const nodeId = nodeData.id
-    const nodeValue = nodeData.value
     const nodeSourceList = nodeData.targetLinks
     const nodeTargetList = nodeData.sourceLinks
-    
+
     const [showNewLinkModal, setShowNewLinkModal] = useState(false)
     const [newSourceModal, setNewSourceModal] = useState(false)
     const [connectingNode, setConnectingNode] = useState('')
     const [newNodeValue, setNewNodeValue] = useState('')
-
-    const handleKeyDownIdUpdate = (e) => {
-        if (e.key === 'Enter') {
-            console.log('enter')
-            updateNodeId(nodeId)
-            e.target.blur()
-        }
-    }
 
     const openNewLinkModal = (source) => {
         setNewSourceModal(source)
@@ -49,22 +42,19 @@ const BudgetSidebar = ({
         handleOnClose()
     }
 
+    // Format Data for Pie Chart
+    const pieFormattedSources = nodeSourceList.map(({ source: { id }, value, source: { color } }) => ({ id, value, color }))
+    const pieFormattetTargets = nodeTargetList.map(({ target: { id }, value, target: { color } }) => ({ id, value, color }))
+
     return (
         <>
-            {/* Headline */}
-            <input
-                className={styles.title}
-                value={nodeId}
-                onChange={e => setNodeTitle(e.target.value)}
-                onKeyDown={handleKeyDownIdUpdate}
-            />
-
             {/* Source Section */}
             <ListSection
                 title={'Sources'}
+                editable={true}
                 target={false}
-                amount={nodeValue}
                 entryList={nodeSourceList}
+                delteLink={delteLink}
                 handleCreateNew={() => openNewLinkModal(true)}
                 updateLinkValue={updateLinkValue}
                 buttonLabel={'Add Source'}
@@ -73,17 +63,32 @@ const BudgetSidebar = ({
             {/* Target Section */}
             <ListSection
                 title={'Expenses'}
+                editable={true}
                 target={true}
                 entryList={nodeTargetList}
+                delteLink={delteLink}
                 handleCreateNew={() => openNewLinkModal(false)}
                 updateLinkValue={updateLinkValue}
                 buttonLabel={'Add Expense'}
             />
 
+            {/* Source Pie Chart */}
+            {/*<div className={styles.pieChartWrapper}>
+                <div className={styles.pieChartWidget}>
+                    <PieGraph data={pieFormattedSources} />
+                </div>
+                <div className={styles.pieChartWidget}>
+                    <PieGraph data={pieFormattetTargets} />
+                </div>
+            </div>*/}
+
             {/* Modal for adding a new Link */}
             {showNewLinkModal && (
                 <Modal onClose={handleOnClose}>
                     <NewLinkModal
+                        ids={ids}
+                        nodeInputPlaceholder={newSourceModal ? 'Source Id' : 'Expense Id'}
+                        newSourceModal={newSourceModal}
                         connectingNode={connectingNode}
                         setConnectingNode={setConnectingNode}
                         nodeValue={newNodeValue}
@@ -97,4 +102,4 @@ const BudgetSidebar = ({
     )
 }
 
-export default BudgetSidebar
+export default ExpenseSidebar

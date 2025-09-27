@@ -15,6 +15,9 @@
 .ListEntry:hover {
     background-color: var(--bg-light);
 }
+.ListEntry:hover .square img {
+    opacity: 1;
+}
 
 .square {
     height: 100%;
@@ -22,6 +25,18 @@
     background-color: #16b49a;
     border-radius: 0.5rem;
     flex-shrink: 0;
+    outline: none;
+    border: none;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.square img {
+    opacity: 0;
+    transition: opacity 0.2s ease-in-out;
+    cursor: pointer;
 }
 
 .name {
@@ -36,7 +51,7 @@
     font-size: 1.2rem;
     color: var(--text);
     text-align: right;
-    width: 3rem;
+    width: 4rem;
     flex-shrink: 0;
 }
 
@@ -57,4 +72,9 @@
 
 .input:focus {
     background-color: var(--bg-light);
+    cursor: default;
+}
+
+.pointer {
+    cursor: pointer;
 }

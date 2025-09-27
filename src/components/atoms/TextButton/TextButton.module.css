@@ -1,15 +1,19 @@
 .TextButton {
     width: fit-content;
-    padding: 0.5rem 0.75rem;
-    border-radius: 0.75rem;
-    font-size: 1rem;
     outline: none;
     border: none;
-    color: var(--text);
+    padding: 0.75rem 0.75rem;
+    border-radius: 0.75rem;
     box-sizing: border-box;
-    font-family: 'Rubik', sans-serif;
     background: rgba(255, 255, 255, 0.1);
+
+    font-family: 'Rubik', sans-serif;
+    font-size: 1rem;
+    letter-spacing: 0.6px;
+    color: var(--text);
+
     transition: background ease 0.2s;
+    cursor: pointer;
 }
 
 .TextButton:hover {

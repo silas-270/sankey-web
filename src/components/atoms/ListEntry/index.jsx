@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import Trashcan from '@assets/Trashcan.svg'
 import styles from './ListEntry.module.css'
 
 const ListEntry = ({
@@ -8,10 +9,11 @@ const ListEntry = ({
     value,
     color,
     editable,
-    updateLinkValue
+    updateLinkValue,
+    delteLink
 }) => {
     const [valueVal, setValueVal] = useState(value)
-    
+
     const handleUpdateLinkValue = () => {
         updateLinkValue(source, target, valueVal)
     }
@@ -25,15 +27,21 @@ const ListEntry = ({
 
     return (
         <div className={styles.ListEntry}>
-            <div className={styles.square} style={{ backgroundColor: color }} />
+            {editable ? (
+                <button onClick={() => delteLink(source, target)} className={styles.square} style={{ backgroundColor: color }}>
+                    <img src={Trashcan} alt='T' />
+                </button>
+            ) : (
+                <div className={styles.square} style={{ backgroundColor: color }} />
+            )}
             <div className={styles.name}>
                 {name}
             </div>
             <input
-                className={`${styles.value} ${styles.input}`}
+                className={`${styles.value} ${editable && styles.pointer} ${styles.input}`}
                 value={valueVal}
                 onChange={e => setValueVal(e.target.value)}
-                onKeyDown={handleKeyDown} // <-- Add the key down handler here
+                onKeyDown={handleKeyDown}
                 disabled={!editable}
             />
         </div>

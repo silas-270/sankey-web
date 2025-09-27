@@ -1,0 +1,17 @@
+.NewSourceBtn {
+    height: 1.4rem;
+    border-radius: 0.7rem;
+    border: none;
+    outline: none;
+    background: var(--primary);
+    font-family: 'Rubik', sans-serif;
+    letter-spacing: 0.6px;
+    color: var(--text);
+    cursor: pointer;
+    padding: 0.2rem 0.5rem;
+    transition: background ease-in-out 0.2s;
+}
+
+.NewSourceBtn:hover {
+    background: var(--primary-light);
+}

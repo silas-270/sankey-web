@@ -3,7 +3,8 @@ import styles from './TextButton.module.css'
 const TextButton = ({
     label,
     onClick,
-    type
+    type,
+    style
 }) => {
     const buttonStyles = {
         green: styles.green,
@@ -13,6 +14,7 @@ const TextButton = ({
         <button
             className={`${styles.TextButton} ${buttonStyles[type]}`}
             onClick={onClick}
+            style={style}
         >
             {label}
         </button>

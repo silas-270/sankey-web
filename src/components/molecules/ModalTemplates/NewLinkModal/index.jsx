@@ -1,8 +1,12 @@
 import TextInput from '@atoms/TextInput'
+import SuggestionInput from '@atoms/SuggestionInput'
 import TextButton from '@atoms/TextButton'
 import styles from './NewLinkModal.module.css'
 
 const NewLinkModal = ({
+    ids,
+    nodeInputPlaceholder,
+    newSourceModal,
     connectingNode,
     setConnectingNode,
     nodeValue,
@@ -11,17 +15,22 @@ const NewLinkModal = ({
     onSuccess
 }) => (
     <div className={styles.NewLinkModal}>
-        <TextInput
-            value={connectingNode}
-            onChange={setConnectingNode}
-            placeholder={'Source Node'}
-        />
-        <TextInput
-            value={nodeValue}
-            onChange={setNodeValue}
-            placeholder={'Connection Value'}
-        />
-        <div className='divider' />
+        <div className={styles.headline}>{newSourceModal ? 'Enter Source' : 'Enter Expense'}</div>
+        <div className={styles.inputBar}>
+            <SuggestionInput
+                style={{ 'flex': '3' }}
+                value={connectingNode}
+                onChange={setConnectingNode}
+                placeholder={nodeInputPlaceholder}
+                suggestions={ids}
+            />
+            <TextInput
+                style={{ 'flex': '1' }}
+                value={nodeValue}
+                onChange={setNodeValue}
+                placeholder={'Value'}
+            />
+        </div>
         <div className={styles.buttonBar}>
             <TextButton
                 label={'Create'}
