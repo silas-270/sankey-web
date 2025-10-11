@@ -1,0 +1,19 @@
+.TextButton {
+    outline: none;
+    border: none;
+    font-family: 'Rubik', sans-serif;
+    width: 100%;
+    background: var(--bg);
+    color: var(--text-muted);
+    padding: 0.5rem;
+    border-radius: 1rem;
+    font-size: 1rem;
+    transition: color ease-in-out 0.2s,
+        background ease-in-out 0.2s;
+    cursor: pointer;
+}
+
+.TextButton:hover {
+    color: var(--text);
+    background: var(--bg-light);
+}

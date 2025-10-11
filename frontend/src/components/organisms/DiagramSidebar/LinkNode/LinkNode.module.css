@@ -1,0 +1,125 @@
+.LinkNode {
+    border-radius: 1rem;
+    box-sizing: border-box;
+    background-color: var(--bg);
+}
+
+.NodeButton {
+    width: 100%;
+    padding: 0.5rem;
+    border-radius: 1rem;
+    color: var(--text);
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    transition: background ease-in-out 0.2s;
+}
+
+.NodeButton:hover {
+    background-color: var(--bg-light);
+}
+
+.NodeButton:hover .squareButton {
+    width: 3.6rem;
+}
+
+.NodeButton:hover .squareButton img {
+    opacity: 1;
+}
+
+.leftSide {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+    flex: 1;
+    min-width: 0;
+}
+
+.square {
+    height: 1.8rem;
+    width: 1.8rem;
+    background-color: #16b49a;
+    border-radius: 0.5rem;
+    flex-shrink: 0;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.squareButton {
+    height: 1.8rem;
+    background-color: #16b49a;
+    border-radius: 0.5rem;
+    flex-shrink: 0;
+    outline: none;
+    border: none;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: width 0.2s ease-in-out;
+    padding: 0 0.25rem;
+    width: 1.8rem;
+    box-sizing: border-box;
+}
+
+.svgButton {
+    outline: none;
+    border: none;
+    background: transparent;
+    height: 100%;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    padding: 0;
+}
+
+.svgButton img {
+    height: 80%;
+    opacity: 0;
+    transition: opacity 0.2s ease-in-out;
+    cursor: pointer;
+}
+
+.nameValueWrapper {
+    border: none;
+    outline: none;
+    background: transparent;
+    flex-grow: 1;
+    margin-left: 0.75rem;
+    display: flex;
+    cursor: pointer;
+    padding: 0;
+}
+
+.nameValueWrapper:disabled {
+    cursor: default;
+}
+
+.name {
+    flex-grow: 1;
+    font-size: 1.2rem;
+    color: var(--text);
+    text-align: left;
+}
+
+.value {
+    font-size: 1.2rem;
+    color: var(--text);
+    text-align: right;
+    flex-shrink: 0;
+    margin-right: 0.5rem;
+}
+
+.divider {
+    border-bottom: 2px solid var(--bg-light2);
+    margin: 0.25rem 0.5rem;
+}
+
+.updateList {
+    display: flex;
+    flex-direction: column;
+}

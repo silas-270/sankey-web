@@ -1,0 +1,47 @@
+.TextButton {
+    width: fit-content;
+    outline: none;
+    border: none;
+    padding: 0.5rem 0.75rem;
+    border-radius: 1.25rem;
+    box-sizing: border-box;
+    background: rgba(255, 255, 255, 0.1);
+
+    font-family: 'Rubik', sans-serif;
+    font-size: 1.2rem;
+    letter-spacing: 0.6px;
+    color: var(--text);
+
+    transition: background ease 0.2s;
+    cursor: pointer;
+}
+.TextButton:hover {
+    background: rgba(255, 255, 255, 0.15);
+}
+.TextButton:focus {
+    background: rgba(255, 255, 255, 0.15);
+}
+
+.green {
+    background: var(--primary);
+    color: var(--bg);
+    transition: background ease 0.2s;
+}
+.green:hover {
+    background: var(--primary-light);
+}
+.green:focus {
+    background: var(--primary-light);
+}
+
+.red {
+    background: var(--secondary);
+    color: var(--bg);
+    transition: background ease 0.2s;
+}
+.red:hover {
+    background: var(--secondary-light);
+}
+.red:focus {
+    background: var(--secondary-light);
+}

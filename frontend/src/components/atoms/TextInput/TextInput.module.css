@@ -1,0 +1,17 @@
+.TextInput {
+    width: 100%;
+    padding: 0.5rem;
+    font-size: 1.2rem;
+    line-height: 1;
+    border-radius: 0.75rem;
+    outline: none;
+    border: 1px solid var(--bg-light);
+    color: var(--text);
+    box-sizing: border-box;
+    font-family: 'Rubik', sans-serif;
+    background-color: var(--bg);
+}
+
+.TextInput:focus {
+    background: var(--bg-light);
+}

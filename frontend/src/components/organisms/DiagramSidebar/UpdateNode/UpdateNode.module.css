@@ -1,0 +1,108 @@
+.UpdateNodeWrapper {
+    border-radius: 1rem;
+    background-color: var(--bg);
+}
+
+.UpdateNode {
+    width: 100%;
+    padding: 0.5rem;
+    border-radius: 1rem;
+    color: var(--text);
+    display: flex;
+    align-items: top;
+    box-sizing: border-box;
+    transition: background ease-in-out 0.2s;
+}
+
+.UpdateNodeWrapper:hover {
+    background-color: var(--bg-light);
+}
+
+.UpdateNode:hover .square img {
+    opacity: 1;
+}
+
+.square {
+    height: 1.8rem;
+    aspect-ratio: 1;
+    border-radius: 0.5rem;
+    flex-shrink: 0;
+    outline: none;
+    border: none;
+    background: var(--bg-light2);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.square img {
+    height: 80%;
+    opacity: 0;
+    transition: opacity 0.2s ease-in-out;
+    cursor: pointer;
+}
+
+.nameValueWrapper {
+    margin-left: 0.75rem;
+    flex-grow: 1;
+    min-width: 0;
+}
+
+.listEntry {
+    width: 100%;
+    display: flex;
+}
+
+.listButton {
+    border: none;
+    outline: none;
+    background: transparent;
+    cursor: pointer;
+    padding: 0;
+}
+
+.nameValueWrapper:disabled {
+    cursor: default;
+}
+
+.name {
+    flex-grow: 1;
+    font-size: 1.2rem;
+    color: var(--text);
+    text-align: left;
+}
+
+.value {
+    font-size: 1.2rem;
+    color: var(--text);
+    text-align: right;
+    flex-shrink: 0;
+    margin-right: 0.5rem;
+}
+
+.positiveValue {
+    color: var(--primary)
+}
+
+.negativeValue {
+    color: var(--secondary)
+}
+
+.date {
+    color: var(--text-muted);
+    font-style: italic;
+}
+
+.imageContainer {
+    margin: 0.5rem 0;
+    display: flex;
+    flex-direction: row;
+    gap: 0.5rem;
+    overflow-x: auto;
+}
+
+.imageContainer img {
+    object-fit: cover;
+    border-radius: 0.75rem;
+    height: 5rem;
+}
