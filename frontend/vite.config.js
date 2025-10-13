@@ -5,6 +5,10 @@ import path from 'path'
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [react()],
+  server: {
+    // This will expose your server to the network
+    host: true,
+  },
   resolve: {
     alias: {
       '@assets': path.resolve(__dirname, 'src/assets'),

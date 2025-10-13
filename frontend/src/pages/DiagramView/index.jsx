@@ -6,14 +6,10 @@ import AddLinkModal from '@molecules/Modals/AddLinkModal'
 import ModalTemplate from '@molecules/Modals/Template'
 import useSankey from '@services/hooks/useSankey'
 import styles from './DiagramView.module.css'
-import useDevice from '../../services/hooks/useDevice'
-
 
 const DiagramView = () => {
     const { sankeyData, isLoading, error } = useSankey()
     const setData = useSankeyRawStore((state) => state.setData)
-
-    const { test } = useDevice()
 
     const infoModalStyle = {
         width: '100%',
@@ -49,16 +45,13 @@ const DiagramView = () => {
         return (
             <>
                 {/* Data available? */}
-                {/*(sankeyData.links && sankeyData.links.length > 0) ? (
+                {(sankeyData.links && sankeyData.links.length > 0) ? (
                     <div style={{ height: '100vh', padding: '0.5rem', boxSizing: 'border-box' }}>
                         <DiagramDisplay sankeyData={sankeyData} />
                     </div>
                 ) : (
                     <AddLinkModal />
-                )*/}
-                <div style={{ fontSize: '2rem', color: 'var(--text' }}>
-                    {test}
-                </div>
+                )}
             </>
         )
     }
