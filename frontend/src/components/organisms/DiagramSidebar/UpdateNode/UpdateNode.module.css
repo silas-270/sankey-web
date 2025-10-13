@@ -24,6 +24,7 @@
 
 .square {
     height: 1.8rem;
+    width: 1.8rem;
     aspect-ratio: 1;
     border-radius: 0.5rem;
     flex-shrink: 0;

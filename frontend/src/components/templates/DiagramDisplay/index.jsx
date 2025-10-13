@@ -29,7 +29,7 @@ const DiagramDisplay = ({ sankeyData }) => {
     }
 
     return (
-        <div className={isMobile ? '' : styles.DiagramDisplay}>
+        <div className={isMobile ? styles.DiagramMobileDisplay : styles.DiagramDisplay}>
             <div className={isMobile ? styles.diagramMobileWrapper : styles.diagramWrapper}>
                 <DiagramControlBar
                     graphData={graphData}
