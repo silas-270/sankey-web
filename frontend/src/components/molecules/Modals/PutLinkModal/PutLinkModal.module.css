@@ -42,3 +42,10 @@
     justify-content: end;
     gap: 1rem;
 }
+
+.nodeText {
+    font-size: 1.2rem;
+    white-space: nowrap;
+    flex-shrink: 0;
+    color: var(--text-muted);
+}

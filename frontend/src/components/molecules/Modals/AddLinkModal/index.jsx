@@ -1,10 +1,10 @@
 import { useState } from 'react'
-import { validateValue } from '@services/validate/validateEntries'
+import { formatValue } from '@services/data/formatEntries'
 import useSankey from '@services/hooks/useSankey'
 import Template from '../Template'
 import FileUpload from '@atoms/FileUpload'
 import TextInput from '@atoms/TextInput'
-//import SuggestionInput from '@atoms/SuggestionInput'
+import SuggestionInput from '@atoms/SuggestionInput'
 // RProblem with reredners
 import TextButton from '@atoms/TextButton'
 import styles from './AddLinkModal.module.css'
@@ -67,14 +67,12 @@ const AddLinkModal = ({ onClose, nodeList }) => {
                             value={sourceNode}
                             onChange={setSourceNode}
                             placeholder={'Source Node'}
-                        //suggestions={nodeList}
                         />
                         <TextInput
                             style={{ flexGrow: 1 }}
                             value={targetNode}
                             onChange={setTargetNode}
                             placeholder={'Target Node'}
-                        //suggestions={nodeList}
                         />
                     </div>
                 </div>

@@ -20,10 +20,6 @@
     z-index: 10;
 }
 
-.TextInput:focus {
-    background: var(--bg-light);
-}
-
 .ghostText {
     position: absolute;
     top: 0;
@@ -41,6 +37,7 @@
 .ghostPrefix {
     color: transparent;
 }
+
 .ghostSuffix {
     color: var(--text-muted);
     font-style: italic;

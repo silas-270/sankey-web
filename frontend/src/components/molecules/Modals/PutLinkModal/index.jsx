@@ -1,5 +1,7 @@
 import { useState } from 'react'
-import { validateDate } from '@services/validate/validateEntries'
+import { formatDateToISO, formatDateFromISO } from '@services/data/formatEntries'
+import useSankeyRawStore from '@services/zustand/useSankeyRawStore'
+import validateLink from '@services/data/validateLink'
 import useSankey from '@services/hooks/useSankey'
 import Template from '../Template'
 import TextInput from '@atoms/TextInput'
@@ -23,34 +25,42 @@ const diffInputs = (prevInputs, newInputs) => {
     return update
 }
 
-const PutLinkModal = ({ onClose, link, nodeList }) => {
+const PutLinkModal = ({ onClose, link, isTarget, nodeList }) => {
     const { putLink, delLink } = useSankey()
-    const [date, setDate] = useState(link.created_at || '')
-    const [sourceNode, setSourceNode] = useState(link.source.id || '')
-    const [targetNode, setTargetNode] = useState(link.target.id || '')
+    const graphData = useSankeyRawStore((state) => state.rawSankeyData)
+    const [date, setDate] = useState(formatDateFromISO(link.created_at) || '')
     const [showDanger, setShowDanger] = useState(false)
+    const [connectingNode, setConnectingNode] = useState((isTarget ? link.source.id : link.target.id) || '')
+
+    const sourceNode = isTarget ? connectingNode : link.source.id
+    const targetNode = isTarget ? link.target.id : connectingNode
 
     const handleOnClose = () => {
         setDate('')
-        setSourceNode('')
-        setTargetNode('')
+        setConnectingNode('')
         setShowDanger(false)
         onClose()
     }
 
     const handleOnSuccess = () => {
-        if (!link.id || !sourceNode || !targetNode || validateDate(date)) {
-            const updates = diffInputs(
-                link,
-                {
-                    source: sourceNode.trim(),
-                    target: targetNode.trim(),
-                    created_at: date.trim()
-                }
-            )
-            console.log(updates)
-            putLink(updates)
+        const formattedDate = formatDateToISO(date)
+        if (!formattedDate) {
+            console.warn('Date must be in DD.MM.YYYY format')
+            return
         }
+        const inputs = {
+            source: sourceNode.trim(),
+            target: targetNode.trim(),
+            created_at: formattedDate.trim()
+        }
+        const { success, message } = validateLink(graphData, inputs, true)
+        if (!success) {
+            console.warn(message)
+            return
+        }
+        const updates = diffInputs(link, inputs)
+        console.log(updates)
+        putLink(updates)
         handleOnClose()
     }
 
@@ -83,18 +93,14 @@ const PutLinkModal = ({ onClose, link, nodeList }) => {
                     </div>
                 </div>
                 <div className={styles.inputWrapper}>
-                    <div className={styles.inputBar}>
+                    <div className={styles.inputBar} style={{ alignItems: 'center' }}>
+                        <div className={styles.nodeText}>
+                            {isTarget ? 'Source Node:' : 'Target Node:'}
+                        </div>
                         <TextInput
                             style={{ flexGrow: 1 }}
-                            value={sourceNode}
-                            onChange={setSourceNode}
-                            placeholder={'Source Node'}
-                        //suggestions={nodeList}
-                        />
-                        <TextInput
-                            style={{ flexGrow: 1 }}
-                            value={targetNode}
-                            onChange={setTargetNode}
+                            value={connectingNode}
+                            onChange={setConnectingNode}
                             placeholder={'Target Node'}
                         //suggestions={nodeList}
                         />

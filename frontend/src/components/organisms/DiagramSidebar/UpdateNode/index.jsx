@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { formatDateFromISO } from '@services/data/formatEntries'
 import PutUpdateModal from '@molecules/Modals/PutUpdateModal'
 import Edit from '@assets/Edit.svg'
 import styles from './UpdateNode.module.css'
@@ -8,15 +9,7 @@ const UpdateNode = ({ update, link }) => {
     const [expanded, setExpanded] = useState(false)
 
     // Format date for display
-    const date = new Date(update.created_at)
-    const formattedDate = date.toLocaleDateString('de-DE', {
-        year: 'numeric',
-        month: '2-digit',
-        day: '2-digit',
-        hour: '2-digit',
-        minute: '2-digit',
-        hour12: false
-    })
+    const formattedDate = formatDateFromISO(update.created_at)
 
     const handleOnClick = () => {
         setExpanded((prev) => !prev)

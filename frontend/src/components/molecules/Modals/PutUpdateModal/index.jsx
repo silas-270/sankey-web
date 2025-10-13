@@ -1,11 +1,13 @@
 import { useState } from 'react'
-import { validateValue, validateDate } from '@services/validate/validateEntries'
+import validateUpdate from '@services/data/validateUpdate'
+import { formatDateToISO, formatDateFromISO } from '@services/data/formatEntries'
 import useSankey from '@services/hooks/useSankey'
 import Template from '../Template'
 import FileUpload from '@atoms/FileUpload'
 import TextInput from '@atoms/TextInput'
 import TextButton from '@atoms/TextButton'
 import styles from './PutUpdateModal.module.css'
+import { formatValue } from '@services/data/formatEntries'
 
 const diffInputs = (prevInputs, newInputs) => {
     const update = {}
@@ -27,7 +29,7 @@ const diffInputs = (prevInputs, newInputs) => {
 
 const PutUpdateModal = ({ onClose, link, update }) => {
     const { putUpdate, delUpdate } = useSankey()
-    const [date, setDate] = useState(update.created_at || '')
+    const [date, setDate] = useState(formatDateFromISO(update.created_at) || '')
     const [description, setDescription] = useState(update.name || '')
     const [value, setValue] = useState(update.value || '')
     const [meta, setMeta] = useState(update.meta || {})
@@ -42,18 +44,24 @@ const PutUpdateModal = ({ onClose, link, update }) => {
     }
 
     const handleOnSuccess = () => {
-        if (!update.id || !validateDate(date) || !description || !validateValue(value)) {
-            console.error('Update Params missing')
+        const formattedDate = formatDateToISO(date)
+        const formattedValue = formatValue(value)
+        if (!formattedDate) {
+            console.warn('Date must be in DD.MM.YYYY format')
+            return
         }
-        const updates = diffInputs(
-            update,
-            {
-                name: description.trim(),
-                value: parseFloat(value),
-                meta,
-                created_at: date.trim()
-            }
-        )
+        const inputs = {
+            name: description.trim(),
+            value: formattedValue,
+            meta,
+            created_at: date.trim()
+        }
+        const { success, message } = validateUpdate(inputs, true)
+        if (!success) {
+            console.warn(message)
+            return
+        }
+        const updates = diffInputs(update, inputs)
         console.log(updates)
         putUpdate(updates)
         handleOnClose()

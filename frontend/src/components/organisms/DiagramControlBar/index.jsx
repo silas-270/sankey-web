@@ -1,6 +1,5 @@
 import DownloadFile from '@assets/DownloadFile.svg'
 import DownloadImage from '@assets/DownloadImage.svg'
-import NewSourceBtn from './NewSourceBtn'
 import styles from './DiagramControlBar.module.css'
 
 const downloadJSON = (data, fileName) => {
@@ -17,7 +16,6 @@ const downloadJSON = (data, fileName) => {
 const DiagramControlBar = () => {
     return (
         <div className={styles.DiagramControlBar}>
-            <NewSourceBtn />
             <div className={styles.exportOptions}>
                 <button
                     className={styles.svgBtn}

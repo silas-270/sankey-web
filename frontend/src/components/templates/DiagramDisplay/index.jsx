@@ -1,14 +1,18 @@
 import { useState } from 'react'
+import useDevice from '@services/hooks/useDevice'
 import useSankeyStore from '@services/zustand/useSankeyStore'
+import useSankeyRawStore from '@services/zustand/useSankeyRawStore'
 import SankeyDisplay from '@molecules/SankeyGraph/SankeyDisplay'
-//import DiagramControlBar from '@organisms/DiagramControlBar'
+import DiagramControlBar from '@organisms/DiagramControlBar'
 import DiagramSidebar from '@organisms/DiagramSidebar'
 import styles from './DiagramDisplay.module.css'
 
 const DiagramDisplay = ({ sankeyData }) => {
+    const { isMobile } = useDevice()
     const [showSidebar, setShowSidebar] = useState(false)
     const [selectedNodeId, setSelectedNodeId] = useState('')
     const setData = useSankeyStore((state) => state.setData)
+    const graphData = useSankeyRawStore((state) => state.rawSankeyData)
 
     const onSetFormattedData = (newFormattedData) => {
         setData(newFormattedData)
@@ -25,12 +29,12 @@ const DiagramDisplay = ({ sankeyData }) => {
     }
 
     return (
-        <div className={styles.DiagramDisplay}>
-            <div className={styles.diagramWrapper}>
-                {/*<DiagramControlBar 
-                        rawData={rawData}
-                    />*/}
-                <div className={`${styles.diagram} ${styles.active}`}>
+        <div className={isMobile ? '' : styles.DiagramDisplay}>
+            <div className={isMobile ? styles.diagramMobileWrapper : styles.diagramWrapper}>
+                <DiagramControlBar
+                    graphData={graphData}
+                />
+                <div className={styles.diagram}>
                     <SankeyDisplay
                         sankeyData={sankeyData}
                         onSetFormattedData={onSetFormattedData}
@@ -39,7 +43,7 @@ const DiagramDisplay = ({ sankeyData }) => {
                 </div>
             </div>
             {showSidebar && (
-                <div className={styles.sidebarWrapper}>
+                <div className={isMobile ? styles.sidebarMobileWrapper : styles.sidebarWrapper}>
                     <DiagramSidebar
                         selectedNodeId={selectedNodeId}
                         setShowSidebar={setShowSidebar}

@@ -13,25 +13,27 @@
     flex-direction: column;
 }
 
-.diagram {
-    height: 100%;
-    flex-grow: 1;
-    padding: 1rem;
-    border-radius: 1rem;
-    border: 2px solid var(--bg);
+.diagramMobileWrapper {
+    width: 100%;
+    height: 20rem;
     display: flex;
     flex-direction: column;
 }
 
-.diagram.active {
+.diagram {
+    height: 100%;
+    flex-grow: 1;
+    padding: 1rem;
     border-radius: 0 0 1rem 1rem;
+    border: 2px solid var(--bg);
 }
 
 .sidebarWrapper {
-    height: 100%;
     width: 350px;
     flex-shrink: 0;
-    padding: 1rem;
-    border-radius: 1rem;
-    border: 2px solid var(--bg);
+    height: 100%;
+}
+
+.sidebarMobileWrapper {
+    width: 100%;
 }

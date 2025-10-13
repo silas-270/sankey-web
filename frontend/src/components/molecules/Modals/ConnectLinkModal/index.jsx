@@ -1,5 +1,6 @@
 import { useState } from 'react'
-import { validateValue } from '@services/validate/validateEntries'
+import useSankeyRawStore from '@services/zustand/useSankeyRawStore'
+import validateLink from '@services/data/validateLink'
 import useSankey from '@services/hooks/useSankey'
 import Template from '../Template'
 import FileUpload from '@atoms/FileUpload'
@@ -8,15 +9,17 @@ import TextInput from '@atoms/TextInput'
 // RProblem with reredners
 import TextButton from '@atoms/TextButton'
 import styles from './ConnectLinkModal.module.css'
+import { formatValue } from '@services/data/formatEntries'
 
 const ConnectLinkModal = ({
     onClose,
     nodeId,
-    isTarget,
+    isTarget, // Will the new Node be the target?
     title,
-    nodeList
+    nodeList,
 }) => {
     const { addLink } = useSankey()
+    const graphData = useSankeyRawStore((state) => state.rawSankeyData)
     const [connectingNode, setConnectingNode] = useState('')
     const sourceNode = isTarget ? nodeId : connectingNode
     const targetNode = isTarget ? connectingNode : nodeId
@@ -34,18 +37,20 @@ const ConnectLinkModal = ({
     }
 
     const handleOnSuccess = () => {
-        if (!sourceNode || !targetNode || !description || !validateValue(value)) {
-            console.error('Missing Input')
-            return
-        }
+        const formattedValue = formatValue(value)
         const newLink = {
             source: sourceNode.trim(),
             target: targetNode.trim(),
             update: {
                 name: description.trim(),
-                value: parseFloat(value),
+                value: formattedValue,
                 meta
             }
+        }
+        const { success, message } = validateLink(graphData, newLink)
+        if (!success) {
+            console.warn(message)
+            return
         }
         console.log(newLink)
         addLink(newLink)

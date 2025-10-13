@@ -20,4 +20,7 @@
     background: var(--bg-dark);
     width: 100%;
     max-width: 30rem;
+    max-height: 100vh;
+    overflow-y: auto;
+    box-sizing: border-box;
 }

@@ -78,6 +78,7 @@ const LinkNode = ({
                     onClose={() => setShowLinkModal(false)}
                     nodeList={nodeList}
                     link={link}
+                    isTarget={isTarget}
                 />
             )}
             {showUpdateModal && (

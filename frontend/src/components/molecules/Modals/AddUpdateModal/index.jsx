@@ -1,5 +1,6 @@
 import { useState } from 'react'
-import { validateValue } from '@services/validate/validateEntries'
+import { formatValue } from '@services/data/formatEntries'
+import validateUpdate from '@services/data/validateUpdate'
 import useSankey from '@services/hooks/useSankey'
 import Template from '../Template'
 import FileUpload from '@atoms/FileUpload'
@@ -21,15 +22,17 @@ const AddUpdateModal = ({ onClose, link }) => {
     }
 
     const handleOnSuccess = () => {
-        if (!link.id || !validateValue(value) || !description) {
-            console.error('Input fields missing')
-            return
-        }
+        const formattedValue = formatValue(value, true)
         const newUpdate = {
             link_id: link.id,
             name: description.trim(),
-            value: parseFloat(value),
+            value: formattedValue,
             meta,
+        }
+        const { success, message } = validateUpdate(newUpdate)
+        if (!success) {
+            console.warn(message)
+            return
         }
         console.log(newUpdate)
         addUpdate(newUpdate)
