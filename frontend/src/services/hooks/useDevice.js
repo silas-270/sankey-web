@@ -2,10 +2,12 @@ import { useEffect, useState } from 'react'
 
 const useDevice = () => {
     const [isMobile, setIsMobile] = useState(false)
+    const [test, setTest] = useState(null)
 
     useEffect(() => {
         const checkMobile = () => {
             setIsMobile(window.innerWidth <= 600)
+            setTest(window.innerWidth)
         }
 
         checkMobile() // Initial check
@@ -15,7 +17,8 @@ const useDevice = () => {
     }, [])
 
     return {
-        isMobile
+        isMobile,
+        test
     }
 }
 
