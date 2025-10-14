@@ -12,8 +12,10 @@ const Template = ({
 
     return ReactDOM.createPortal(
         <div className={styles.popupOverlay} onClick={handleOverlayClick}>
-            <div className={styles.popup} style={style}>
-                {children}
+            <div className={styles.popupWrapper}>
+                <div className={styles.popup} style={style}>
+                    {children}
+                </div>
             </div>
         </div>,
         document.body
