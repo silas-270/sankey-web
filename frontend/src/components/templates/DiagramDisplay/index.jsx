@@ -28,6 +28,10 @@ const DiagramDisplay = ({ sankeyData }) => {
         }
     }
 
+    const onCloseSidebar = () => {
+        setShowSidebar(false)
+    }
+
     return (
         <div className={isMobile ? styles.DiagramMobileDisplay : styles.DiagramDisplay}>
             <div className={isMobile ? styles.diagramMobileWrapper : styles.diagramWrapper}>
@@ -42,11 +46,11 @@ const DiagramDisplay = ({ sankeyData }) => {
                     />
                 </div>
             </div>
-            {showSidebar && (
+            {(showSidebar && selectedNodeId) && (
                 <div className={isMobile ? styles.sidebarMobileWrapper : styles.sidebarWrapper}>
                     <DiagramSidebar
                         selectedNodeId={selectedNodeId}
-                        setShowSidebar={setShowSidebar}
+                        onClose={onCloseSidebar}
                     />
                 </div>
             )}

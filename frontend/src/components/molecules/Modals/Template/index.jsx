@@ -7,7 +7,7 @@ const Template = ({
     children
 }) => {
     const handleOverlayClick = (e) => {
-        if (e.target === e.currentTarget) onClose()
+        if (onClose && (e.target === e.currentTarget)) onClose()
     }
 
     return ReactDOM.createPortal(

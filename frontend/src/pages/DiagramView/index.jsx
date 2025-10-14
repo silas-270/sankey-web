@@ -1,15 +1,22 @@
+import { useEffect } from 'react'
 import DiagramDisplay from '@templates/DiagramDisplay'
 import useSankeyRawStore from '@services/zustand/useSankeyRawStore'
 import Spinner from '@atoms/Spinner'
 import Satellite from '@assets/Satellite.svg'
-import AddLinkModal from '@molecules/Modals/AddLinkModal'
 import ModalTemplate from '@molecules/Modals/Template'
 import useSankey from '@services/hooks/useSankey'
+import Tutorial from '@templates/Tutorial'
 import styles from './DiagramView.module.css'
 
 const DiagramView = () => {
     const { sankeyData, isLoading, error } = useSankey()
     const setData = useSankeyRawStore((state) => state.setData)
+
+    useEffect(() => {
+        if (!isLoading && !error && sankeyData && !sankeyData.error) {
+            setData(sankeyData)
+        }
+    }, [isLoading, error, sankeyData, setData])
 
     const infoModalStyle = {
         width: '100%',
@@ -39,20 +46,15 @@ const DiagramView = () => {
             </ModalTemplate>
         )
     } else {
-        // Set zustand
-        setData(sankeyData)
-        // console.log(sankeyData)
         return (
-            <>
+            <div style={{ height: '100vh', padding: '0.5rem', boxSizing: 'border-box' }}>
                 {/* Data available? */}
                 {(sankeyData.links && sankeyData.links.length > 0) ? (
-                    <div style={{ height: '100vh', padding: '0.5rem', boxSizing: 'border-box' }}>
-                        <DiagramDisplay sankeyData={sankeyData} />
-                    </div>
+                    <DiagramDisplay sankeyData={sankeyData} />
                 ) : (
-                    <AddLinkModal />
+                    <Tutorial />
                 )}
-            </>
+            </div>
         )
     }
 }

@@ -11,3 +11,21 @@ body {
     background-color: var(--bg-light);
     margin: 0 5px;
 }
+
+.head1 {
+    color: var(--text);
+    font-size: 2rem;
+    font-weight: bold;
+}
+
+.head2 {
+    color: var(--text);
+    font-size: 1.6rem;
+    font-weight: bold;
+}
+
+.head3 {
+    color: var(--text);
+    font-size: 1.2rem;
+    font-weight: bold;
+}

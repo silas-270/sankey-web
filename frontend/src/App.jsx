@@ -4,10 +4,10 @@ import DiagramView from './pages/DiagramView'
 const App = () => (
     <BrowserRouter>
         <Routes>
-            <Route path="/sankey/:user" element={<DiagramView />} />
+            <Route path="/s/:user" element={<DiagramView />} />
             <Route 
                 path="/" 
-                element={<Navigate to="/sankey/defaultUserId" replace />} 
+                element={<Navigate to="/s/defaultUserId" replace />} 
             />
             
             {/* Add a general 404 route if needed */}

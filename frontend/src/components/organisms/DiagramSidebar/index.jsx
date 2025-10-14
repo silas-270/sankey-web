@@ -7,7 +7,7 @@ import styles from './DiagramSidebar.module.css'
 
 const DiagramSidebar = ({
     selectedNodeId,
-    setShowSidebar
+    onClose
 }) => {
     const { nodes } = useSankeyStore((state) => state.formattedSankeyData)
     const nodeData = nodes.find(node => node.id === selectedNodeId)
@@ -17,23 +17,34 @@ const DiagramSidebar = ({
 
     const [selectedLink, setSelectedLink] = useState('')
 
-    const targetLinks = nodeData.sourceLinks
-    const sourceLinks = nodeData.targetLinks
-    const depth = nodeData.depth
-
-    // Extract Ids for Ghost Completion
-    const ids = nodes.map(item => (item.id))
-
     useEffect(() => {
         setSelectedLink('')
     }, [selectedNodeId])
+
+    useEffect(() => {
+        if (!nodeData) {
+            onClose()
+        }
+    }, [nodeData, onClose])
+
+    if (!nodeData) {
+        return (
+            <div>Empty</div>
+        )
+    }
+
+    const targetLinks = nodeData.sourceLinks
+    const sourceLinks = nodeData.targetLinks
+
+    // Extract Ids for Ghost Completion
+    const ids = nodes.map(item => (item.id))
 
     return (
         <div className={styles.DiagramSidebar}>
             {/* Headine Section */}
             <div className={styles.headlineWrapper}>
                 <div className={styles.nameGroup}>
-                    <button className={styles.closeBtn} onClick={() => setShowSidebar(false)}>
+                    <button className={styles.closeBtn} onClick={onClose}>
                         {'>'}
                     </button>
                     <div className={styles.name}>{nodeData.id}</div>

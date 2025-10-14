@@ -75,7 +75,7 @@ const PutLinkModal = ({ onClose, link, isTarget, nodeList }) => {
                 {/* Link Data */}
                 <div className={styles.inputWrapper} style={{ gap: 0 }}>
                     <div className={styles.headline}>
-                        {'Update Link'}
+                        {'Edit Link'}
                     </div>
                     {(sourceNode || targetNode) && (
                         <div className={styles.nodeIds}>
