@@ -2,14 +2,15 @@ import { pool } from '../../services/db/db.js'
 import { uploadReceipt } from '../../services/minio/minio.js'
 
 const insertUpdate = async (linkId, name, value, meta, imageFiles) => {
+    let finalMeta = {}
     if (meta && typeof meta === 'string') {
         try {
-            meta = JSON.parse(meta)
+            finalMeta = JSON.parse(meta)
         } catch (error) {
-            meta = {}
+            finalMeta = {}
         }
-    } else {
-        meta = {}
+    } else if (typeof meta === 'object' && meta !== null) {
+        finalMeta = meta
     }
 
     const images = []
@@ -32,20 +33,25 @@ const insertUpdate = async (linkId, name, value, meta, imageFiles) => {
         })
 
         const results = await Promise.all(uploadPromises)
-        console.log('Results of adding:', result)
+        console.log('Results of adding:', results)
 
         // Filter out null results (failed uploads)
         images.push(...results.filter(result => result !== null))
     }
+
+    if (!finalMeta.images) {
+        finalMeta.images = []
+    }
+    finalMeta.images.push(...images)
+
     console.log('New Images array:', images)
-    meta.images = images
 
     const queryText = `
         INSERT INTO updates (link_id, name, value, meta)
         VALUES ($1, $2, $3, $4)
         RETURNING *
     `
-    const values = [linkId, name, value, JSON.stringify(meta)]
+    const values = [linkId, name, value, JSON.stringify(finalMeta)]
 
     const result = await pool.query(queryText, values)
     const newUpdate = result.rows[0]

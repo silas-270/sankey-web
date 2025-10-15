@@ -3,15 +3,16 @@ import { Upload } from '@aws-sdk/lib-storage'
 import { v4 as uuidv4 } from 'uuid'
 
 const BUCKET_NAME = process.env.S3_BUCKET_NAME || 'receipts'
-const S3_ENDPOINT = process.env.S3_ENDPOINT
+const S3_INTERNAL_ENDPOINT = process.env.S3_INTERNAL_ENDPOINT
+const S3_PUBLIC_ENDPOINT = process.env.S3_PUBLIC_ENDPOINT
 
-if (!S3_ENDPOINT || !process.env.S3_ACCESS_KEY || !process.env.S3_SECRET_KEY) {
+if (!S3_INTERNAL_ENDPOINT || !process.env.S3_ACCESS_KEY || !process.env.S3_SECRET_KEY) {
     throw new Error("MINIO/S3 environment variables are not set. File uploads will fail.")
 }
 
 const s3Client = new S3Client({
     region: 'us-east-1',
-    endpoint: S3_ENDPOINT,
+    endpoint: S3_INTERNAL_ENDPOINT,
     forcePathStyle: true,
     credentials: {
         accessKeyId: process.env.S3_ACCESS_KEY,
@@ -42,7 +43,7 @@ const uploadReceipt = async (file) => {
         await parallelUploads3.done()
 
         // Return public url
-        return `${S3_ENDPOINT}/${BUCKET_NAME}/${uniqueFileName}`
+        return `${S3_PUBLIC_ENDPOINT}/${BUCKET_NAME}/${uniqueFileName}`
     } catch (error) {
         console.error("MinIO Upload Error:", error)
         throw new Error("Failed to upload file to storage service.")
