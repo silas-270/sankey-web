@@ -17,11 +17,9 @@ const insertUpdate = async (linkId, name, value, meta, imageFiles) => {
 
     if (imageFiles && imageFiles.length > 0) {
         // use Promises for parallel uploads
-        console.log('Files detected')
         const uploadPromises = imageFiles.map(async file => {
             try {
                 const link = await uploadReceipt(file)
-                console.log('Generated new Link:', link)
                 return ({
                     src: link,
                     alt: file.originalname
@@ -33,7 +31,6 @@ const insertUpdate = async (linkId, name, value, meta, imageFiles) => {
         })
 
         const results = await Promise.all(uploadPromises)
-        console.log('Results of adding:', results)
 
         // Filter out null results (failed uploads)
         images.push(...results.filter(result => result !== null))
@@ -43,8 +40,6 @@ const insertUpdate = async (linkId, name, value, meta, imageFiles) => {
         finalMeta.images = []
     }
     finalMeta.images.push(...images)
-
-    console.log('New Images array:', images)
 
     const queryText = `
         INSERT INTO updates (link_id, name, value, meta)
@@ -65,8 +60,6 @@ const postUpdate = async (linkId, name, value, meta, imageFiles) => {
     if (!linkId || !value || !name) {
         throw new Error('Missing required update data fields')
     }
-
-    console.log('received Files:', imageFiles)
 
     // Insert new update
     const newUpdate = await insertUpdate(linkId, name, value, meta, imageFiles)
