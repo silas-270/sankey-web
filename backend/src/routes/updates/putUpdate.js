@@ -1,8 +1,66 @@
 import { pool } from '../../services/db/db.js'
+import { findMissingImageIds } from './handleData.js'
+import { deleteReceipt, uploadReceipt } from '../../services/minio/minio.js'
 
-const updateUpdate = async (updateData) => {
+const updateUpdate = async (updateData, imageFiles) => {
     // Destructure the required identifier and potential update fields
-    const { updateId, newName, newValue, newMeta, newDate } = updateData
+    const { updateId, newName, newValue, prevMeta: prevMetaJson, newMeta: newMetaJson, newDate } = updateData
+
+    let prevMeta = {}
+    if (prevMetaJson && typeof prevMetaJson === 'string') {
+        try {
+            prevMeta = JSON.parse(prevMetaJson)
+        } catch (error) {
+            console.warn("Could not parse prevMeta JSON string. Using empty object.")
+        }
+    } else if (typeof prevMetaJson === 'object' && prevMetaJson !== null) {
+        prevMeta = prevMetaJson
+    }
+
+    let newMeta = {}
+    if (newMetaJson && typeof newMetaJson === 'string') {
+        try {
+            newMeta = JSON.parse(newMetaJson)
+        } catch (error) {
+            console.warn("Could not parse newMeta JSON string. Using empty object.")
+        }
+    } else if (typeof newMetaJson === 'object' && newMetaJson !== null) {
+        newMeta = newMetaJson
+    }
+
+    // IMAGE HANDELING
+    // Collect missing Image ids in newMeta -> missing ids get deleted
+    const missingImageKeys = findMissingImageIds(prevMeta, newMeta)
+    const deletePromises = missingImageKeys.map(key => {
+        console.log(`Scheduling delete for file key: ${key}`);
+        return deleteReceipt(key)
+    })
+
+    await Promise.all(deletePromises)
+
+    // Add new Images
+    if (imageFiles && imageFiles.length > 0) {
+        // use Promises for parallel uploads
+        const uploadPromises = imageFiles.map(file => {
+            return uploadReceipt(file) // uploadReceipt returns a promise
+                .then(link => ({
+                    src: link,
+                    alt: file.originalname
+                }))
+                .catch(error => {
+                    console.error(`Failed to upload file ${file.originalname}: ${error.message}`)
+                    return null
+                })
+        })
+
+        const results = await Promise.all(uploadPromises)
+
+        // Filter out null results (failed uploads) and push to newMeta
+        if (!newMeta.images) {
+            newMeta.images = []
+        }
+        newMeta.images.push(...results.filter(result => result !== null))
+    }
 
     // 1. Collect the fields to update and their values
     const updates = {}
@@ -12,11 +70,13 @@ const updateUpdate = async (updateData) => {
     if (newName != undefined) {
         updates.name = newName
     }
-    if (newMeta != undefined) {
-        updates.meta = newMeta
-    }
     if (newDate != undefined) {
         updates.created_at = newDate
+    }
+
+    const finalMetaJson = JSON.stringify(newMeta)
+    if (finalMetaJson !== JSON.stringify(prevMeta)) {
+        updates.meta = finalMetaJson
     }
 
     const fieldsToUpdate = Object.keys(updates)
@@ -53,7 +113,7 @@ const updateUpdate = async (updateData) => {
     return newUpdate
 }
 
-const putUpdate = async (updateData) => {
+const putUpdate = async (updateData, imageFiles) => {
     // Destructure properties from the single updateData object
     const { updateId, newDate } = updateData
 
@@ -71,7 +131,7 @@ const putUpdate = async (updateData) => {
     }
 
     // Pass the entire data object to the lower-level function
-    const newUpdate = await updateUpdate(updateData)
+    const newUpdate = await updateUpdate(updateData, imageFiles)
 
     return newUpdate
 }

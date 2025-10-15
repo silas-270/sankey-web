@@ -7,6 +7,7 @@ import ModalTemplate from '@molecules/Modals/Template'
 import useSankey from '@services/hooks/useSankey'
 import Tutorial from '@templates/Tutorial'
 import styles from './DiagramView.module.css'
+import TestUpload from '../../components/test'
 
 const DiagramView = () => {
     const { sankeyData, isLoading, error } = useSankey()
@@ -22,6 +23,12 @@ const DiagramView = () => {
         width: '100%',
         maxWidth: '20rem'
     }
+
+    console.log(sankeyData)
+
+    return (
+        <TestUpload />
+    )
 
     if (isLoading) { // REPLACE 'isLoading'
         return (
