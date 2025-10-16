@@ -100,3 +100,6 @@
 .filePreviewWrapper:hover .deleteOverlay {
     opacity: 1;
 }
+.deleteOverlay:focus {
+    opacity: 1;
+}

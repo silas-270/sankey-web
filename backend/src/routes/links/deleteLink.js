@@ -1,4 +1,5 @@
 import { pool } from '../../services/db/db.js'
+import { deleteReceipt } from '../../services/minio/minio.js'
 
 const deleteLink = async (linkId) => {
     // linkId is required for the WHERE clause
