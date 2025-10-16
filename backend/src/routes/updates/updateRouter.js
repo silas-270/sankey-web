@@ -36,13 +36,27 @@ updateRouter.put('', upload, async (req, res) => {
         if (!verifySession(userId)) {
             return res.status(400).json({ 'error': 'no valid session found' })
         }
+        
+        let prevMeta = req.body.prev_meta
+        if (prevMeta && typeof prevMeta === 'string') {
+            prevMeta = JSON.parse(prevMeta)
+        } else {
+            prevMeta = null
+        }
+
+        let newMeta = req.body.new_meta
+        if (newMeta && typeof newMeta === 'string') {
+            newMeta = JSON.parse(newMeta)
+        } else {
+            newMeta = null
+        }
 
         const updateData = {
             updateId: req.body.update_id,
             newName: req.body.name,
             newValue: req.body.value,
-            newMeta: req.body.new_meta,
-            prevMeta: req.body.prev_meta,
+            prevMeta,
+            newMeta,
             newDate: req.body.created_at
         }
 

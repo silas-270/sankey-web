@@ -9,31 +9,14 @@ import TextButton from '@atoms/TextButton'
 import styles from './PutUpdateModal.module.css'
 import { formatValue } from '@services/data/formatEntries'
 
-const diffInputs = (prevInputs, newInputs) => {
-    const update = {}
-    update.update_id = prevInputs.id
-    if (newInputs.name != prevInputs.name) {
-        update.name = newInputs.name
-    }
-    if (newInputs.value != prevInputs.value) {
-        update.value = newInputs.value
-    }
-    if (newInputs.meta != prevInputs.meta) {
-        update.meta = newInputs.meta
-    }
-    if (newInputs.created_at != prevInputs.created_at) {
-        update.created_at = newInputs.created_at
-    }
-    return update
-}
-
 const PutUpdateModal = ({ onClose, link, update }) => {
     const { putUpdate, delUpdate } = useSankey()
 
     const [description, setDescription] = useState(update.name || '')
     const [value, setValue] = useState(update.value || '')
     const [date, setDate] = useState(formatDateFromISO(update.created_at) || '')
-    const [meta, setMeta] = useState(update.meta || {})
+    const [meta, setMeta] = useState(update.meta || { images: [] })
+    const [newFilesArray, setNewFilesArray] = useState([])
     const [showDanger, setShowDanger] = useState(false)
 
     // Image Arrays
@@ -41,7 +24,8 @@ const PutUpdateModal = ({ onClose, link, update }) => {
         setDate('')
         setDescription('')
         setValue('')
-        setMeta(null)
+        setMeta({})
+        setNewFilesArray([])
         onClose()
     }
 
@@ -55,7 +39,6 @@ const PutUpdateModal = ({ onClose, link, update }) => {
         const inputs = {
             name: description.trim(),
             value: formattedValue,
-            meta,
             created_at: date.trim()
         }
         const { success, message } = validateUpdate(inputs, true)
@@ -63,9 +46,33 @@ const PutUpdateModal = ({ onClose, link, update }) => {
             console.warn(message)
             return
         }
-        const updates = diffInputs(update, inputs)
+
+        // Collect data
+        const formData = new FormData()
+
+        // Append text fields
+        formData.append('update_id', update.id)
+        if (description.trim() !== update.name) {
+            formData.append('name', description.trim())
+        }
+        if (formattedValue !== update.value) {
+            formData.append('value', formattedValue)
+        }
+        if (formattedDate !== update.created_at) {
+            formData.append('created_at', formattedDate)
+        }
+        if (meta !== update.meta) {
+            formData.append('prev_meta', update.meta)
+            formData.append('new_meta', meta)
+        }
+
+        // Append files using the key 'images'
+        newFilesArray.forEach((file) => {
+            formData.append('images', file)
+        })
+
+        putUpdate(formData)
         console.log(updates)
-        putUpdate(updates)
         handleOnClose()
     }
 
@@ -113,6 +120,10 @@ const PutUpdateModal = ({ onClose, link, update }) => {
                 <FileUpload
                     style={{ height: '3.9rem' }}
                     hint='Upload Files'
+                    filesArray={newFilesArray}
+                    setFilesArray={setNewFilesArray}
+                    existingImages={meta.images}
+                    setExistingImages={(newImages) => setMeta(prev => ({ ...prev, images: newImages }))}
                 />
                 <div className={styles.buttonBar}>
                     <TextButton

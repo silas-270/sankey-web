@@ -13,6 +13,8 @@ const FileUpload = ({
     hint,
     filesArray,
     setFilesArray,
+    existingImages,
+    setExistingImages,
     style
 }) => {
     const MAX_FILES_LIMIT = 5
@@ -59,6 +61,13 @@ const FileUpload = ({
         URL.revokeObjectURL(fileToRemove.preview)
     }, [setFilesArray])
 
+    const removeExistingFile = useCallback((imageToRemove) => {
+        const newImages = existingImages.filter((existingImage) =>
+            existingImage.src !== imageToRemove.src || existingImage.alt !== imageToRemove.alt
+        )
+        setExistingImages(newImages)
+    }, [existingImages, setExistingImages])
+
     useEffect(() => {
         return () => filesArray.forEach(file => URL.revokeObjectURL(file.preview))
     }, [filesArray])
@@ -73,12 +82,31 @@ const FileUpload = ({
                     <div>{hint}</div>
                 </div>
             </div>
-            {(filesArray && filesArray.length > 0) && (
+            {(filesArray && filesArray.length > 0 || existingImages && existingImages.length > 0) && (
                 <div className={styles.filePreviewContainer}>
+                    {(existingImages && existingImages.length > 0) && (
+                        <>
+                            {existingImages.map((image, index) => (
+                                <div
+                                    key={`${image.alt}-${index}`}
+                                    className={styles.filePreviewWrapper}
+                                >
+                                    <img src={image.src} alt={image.alt} className={styles.previewImage} />
+
+                                    <button
+                                        className={styles.deleteOverlay}
+                                        onClick={() => removeExistingFile(image)}
+                                    >
+                                        <img src={Trashcan} alt='Delete' />
+                                    </button>
+                                </div>
+                            ))}
+                        </>
+                    )}
                     {filesArray.map((file, index) => (
                         <div
                             key={`${file.name}-${index}`}
-                            className={styles.filePreviewWrapper} // New wrapper class
+                            className={styles.filePreviewWrapper}
                         >
                             <img src={file.preview} alt={file.name} className={styles.previewImage} />
 
