@@ -20,7 +20,7 @@ const FileUpload = ({
     const MAX_FILES_LIMIT = 5
 
     const onDrop = useCallback(acceptedFiles => {
-        const totalExistingFiles = filesArray.length
+        const totalExistingFiles = (filesArray.length || 0) + (existingImages ? existingImages.length : 0)
 
         // 1. Calculate how many *new* files can actually be added.
         const filesToAddCount = Math.min(
@@ -46,7 +46,7 @@ const FileUpload = ({
             console.warn('Some files were rejected because the limit was hit.')
         }
 
-    }, [setFilesArray, filesArray])
+    }, [setFilesArray, filesArray, existingImages])
 
     const { getRootProps, getInputProps, isDragActive } = useDropzone({
         onDrop,

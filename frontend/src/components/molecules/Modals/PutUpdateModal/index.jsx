@@ -61,7 +61,7 @@ const PutUpdateModal = ({ onClose, link, update }) => {
         if (formattedDate !== update.created_at) {
             formData.append('created_at', formattedDate)
         }
-        if (meta !== update.meta) {
+        if (meta !== update.meta || newFilesArray.length > 0) {
             formData.append('prev_meta', JSON.stringify(update.meta))
             formData.append('new_meta', JSON.stringify(meta))
         }
