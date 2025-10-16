@@ -10,10 +10,7 @@ export const fetchGetLinks = async (userId) => {
 }
 
 export const fetchAddLink = async ({ formData, userId }) => {
-    if (!source || !target || !update.value) {
-        console.error('Missing input fields')
-        return
-    }
+    console.log(formData)
     try {
         const response = await fetch(`${API_URL}/links?user=${userId}`, {
             method: 'POST',

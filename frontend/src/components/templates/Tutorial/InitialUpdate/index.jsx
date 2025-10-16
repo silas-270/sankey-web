@@ -1,4 +1,5 @@
 import { formatValue } from '@services/data/formatEntries'
+import FileUpload from '@atoms/FileUpload'
 import validateLink from '@services/data/validateLink'
 import TextButton from '@atoms/TextButton'
 import TextInput from '@atoms/TextInput'
@@ -12,6 +13,8 @@ const InitialUpdate = ({
     setName,
     value,
     setValue,
+    filesArray,
+    setFilesArray,
     setTutorialStage,
     addLink
 }) => {
@@ -30,12 +33,11 @@ const InitialUpdate = ({
     const onSubmit = () => {
         const formattedValue = formatValue(value)
         const newLink = {
-            source: linkData.source,
-            target: linkData.target,
+            source: linkData.source.trim(),
+            target: linkData.target.trim(),
             update: {
-                name: name,
+                name: name.trim(),
                 value: formattedValue,
-                meta: null
             }
         }
         const { success, message } = validateLink({ nodes: [], links: [] }, newLink)
@@ -43,15 +45,33 @@ const InitialUpdate = ({
             console.warn(message)
             return
         }
-        console.log(newLink)
-        addLink(newLink)
+
+        // Collect Data
+        const formData = new FormData()
+
+        // Append text fields
+        formData.append('source', linkData.source.trim())
+        formData.append('target', linkData.target.trim())
+        formData.append('update', JSON.stringify({
+            name: description.trim(),
+            value: formattedValue,
+            meta: {}
+        }))
+
+        // Append files using the key 'images'
+        filesArray.forEach((file) => {
+            formData.append('images', file)
+        })
+
+        addLink({ formData })
+        console.warn(newLink)
     }
 
     return (
         <div className={styles.InitialUpdate}>
             <div className={styles.inputWrapper}>
-                <div className='head1'>
-                    {'You made your first Link!'}
+                <div className='head1' style={{ textAlign: 'center' }}>
+                    {'You made your first Link! 🎉'}
                 </div>
             </div>
             <div className={styles.nodeLayout}>
@@ -98,6 +118,12 @@ const InitialUpdate = ({
                     placeholder={'Initial Value eg 10.00$'}
                 />
             </div>
+            <FileUpload
+                style={{ height: '3.9rem' }}
+                hint='Upload Files'
+                filesArray={filesArray}
+                setFilesArray={setFilesArray}
+            />
             <div className={styles.buttonBar}>
                 <TextButton
                     label={'Go Back'}

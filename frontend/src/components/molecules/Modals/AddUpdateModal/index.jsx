@@ -49,7 +49,7 @@ const AddUpdateModal = ({ onClose, link }) => {
             formData.append('images', file)
         })
 
-        addUpdate(formData)
+        addUpdate({ formData })
         console.warn(newUpdate)
         handleOnClose()
     }

@@ -15,8 +15,9 @@ const Tutorial = () => {
     const [updateData, setUpdateData] = useState({
         name: '',
         value: '',
-        meta: null
+        meta: {}
     })
+    const [filesArray, setFilesArray] = useState([])
 
     let content
     switch (tutorialStage) {
@@ -39,6 +40,8 @@ const Tutorial = () => {
                     setName={(newName) => setUpdateData(prev => ({ ...prev, name: newName }))}
                     value={updateData.value}
                     setValue={(newValue) => setUpdateData(prev => ({ ...prev, value: newValue }))}
+                    filesArray={filesArray}
+                    setFilesArray={setFilesArray}
                     setTutorialStage={setTutorialStage}
                     addLink={addLink}
                 />

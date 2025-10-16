@@ -16,7 +16,7 @@ const upload = multer({ storage: storage }).array('images', 5)
 linkRouter.get('', async (req, res) => {
     try {
         const userId = req.query.user
-        if(!verifySession(userId)) {
+        if (!verifySession(userId)) {
             return res.status(400).json({ 'error': 'no valid session found' })
         }
 
@@ -33,11 +33,17 @@ linkRouter.get('', async (req, res) => {
 linkRouter.post('', upload, async (req, res) => {
     try {
         const userId = req.query.user
-        if(!verifySession(userId)) {
+        if (!verifySession(userId)) {
             return res.status(400).json({ 'error': 'no valid session found' })
         }
 
         const { source, target, update } = req.body
+        if (update && typeof update === 'string') {
+            update = JSON.parse(update)
+        } else {
+            throw new Error('Missing update Field, wrong Format')
+        }
+
         const imageFiles = req.files
         const newLink = await postLink(userId, source, target, update, imageFiles)
 
@@ -51,7 +57,7 @@ linkRouter.post('', upload, async (req, res) => {
 linkRouter.put('', async (req, res) => {
     try {
         const userId = req.query.user
-        if(!verifySession(userId)) {
+        if (!verifySession(userId)) {
             return res.status(400).json({ 'error': 'no valid session found' })
         }
 
@@ -74,7 +80,7 @@ linkRouter.put('', async (req, res) => {
 linkRouter.delete('', async (req, res) => {
     try {
         const userId = req.query.user
-        if(!verifySession(userId)) {
+        if (!verifySession(userId)) {
             return res.status(400).json({ 'error': 'no valid session found' })
         }
 

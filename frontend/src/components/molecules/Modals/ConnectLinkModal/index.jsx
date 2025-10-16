@@ -57,18 +57,18 @@ const ConnectLinkModal = ({
         // Append text fields
         formData.append('source', sourceNode.trim())
         formData.append('target', targetNode.trim())
-        formData.append('update', {
+        formData.append('update', JSON.stringify({
             name: description.trim(),
             value: formattedValue,
             meta: {}
-        })
+        }))
 
         // Append files using the key 'images'
         filesArray.forEach((file) => {
             formData.append('images', file)
         })
 
-        addLink(formData)
+        addLink({ formData })
         console.warn(newLink)
         handleOnClose()
     }
