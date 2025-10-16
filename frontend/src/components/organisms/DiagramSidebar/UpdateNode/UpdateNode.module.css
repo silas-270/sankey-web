@@ -102,7 +102,14 @@
     overflow-x: auto;
 }
 
-.imageContainer img {
+.imageButton {
+    border: none;
+    outline: none;
+    background: transparent;
+    cursor: pointer;
+}
+
+.imageButton img {
     object-fit: cover;
     border-radius: 0.75rem;
     height: 5rem;

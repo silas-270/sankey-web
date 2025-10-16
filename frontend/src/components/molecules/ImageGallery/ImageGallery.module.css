@@ -1,0 +1,26 @@
+.Overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+}
+
+.imageWrapper {
+    width: 100%;
+    max-width: 30rem;
+    max-height: 100vh;
+}
+
+.imageWrapper img {
+    height: 100%;
+    width: 100%;
+    object-fit: contain;
+}

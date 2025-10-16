@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import ImageGallery from '@molecules/ImageGallery'
 import { formatDateFromISO } from '@services/data/formatEntries'
 import PutUpdateModal from '@molecules/Modals/PutUpdateModal'
 import Edit from '@assets/Edit.svg'
@@ -6,6 +7,7 @@ import styles from './UpdateNode.module.css'
 
 const UpdateNode = ({ update, link }) => {
     const [showModal, setShowModal] = useState(false)
+    const [showImageGallery, setShowImageGallery] = useState(false)
     const [expanded, setExpanded] = useState(false)
 
     // Format date for display
@@ -35,7 +37,10 @@ const UpdateNode = ({ update, link }) => {
                                 {(update.meta && update.meta.images) && (
                                     <div className={styles.imageContainer}>
                                         {update.meta.images.map((image, index) => (
-                                            <img key={index} src={image.src} />
+                                            <button key={index} className={styles.imageButton}
+                                                onClick={() => setShowImageGallery(true)}>
+                                                <img src={image.src} />
+                                            </button>
                                         ))}
                                     </div>
                                 )}
@@ -52,6 +57,12 @@ const UpdateNode = ({ update, link }) => {
                     onClose={() => setShowModal(false)}
                     link={link}
                     update={update}
+                />
+            )}
+            {showImageGallery && (
+                <ImageGallery
+                    onClose={() => setShowImageGallery(false)}
+                    image={update.meta.images[0]}
                 />
             )}
         </>
