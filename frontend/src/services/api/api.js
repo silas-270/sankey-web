@@ -10,7 +10,6 @@ export const fetchGetLinks = async (userId) => {
 }
 
 export const fetchAddLink = async ({ formData, userId }) => {
-    console.log(formData)
     try {
         const response = await fetch(`${API_URL}/links?user=${userId}`, {
             method: 'POST',

@@ -37,7 +37,8 @@ linkRouter.post('', upload, async (req, res) => {
             return res.status(400).json({ 'error': 'no valid session found' })
         }
 
-        const { source, target, update } = req.body
+        const { source, target } = req.body
+        let { update } = req.body
         if (update && typeof update === 'string') {
             update = JSON.parse(update)
         } else {

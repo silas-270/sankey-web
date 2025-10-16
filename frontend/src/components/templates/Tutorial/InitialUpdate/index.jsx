@@ -53,7 +53,7 @@ const InitialUpdate = ({
         formData.append('source', linkData.source.trim())
         formData.append('target', linkData.target.trim())
         formData.append('update', JSON.stringify({
-            name: description.trim(),
+            name: name.trim(),
             value: formattedValue,
             meta: {}
         }))
