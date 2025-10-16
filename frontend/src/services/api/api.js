@@ -67,16 +67,11 @@ export const fetchAddUpdate = async ({ formData, userId }) => {
     }
 }
 
-export const fetchPutUpdate = async ({ update_id, name, value, meta, created_at, userId }) => {
-    if (!update_id) {
-        console.error('Missing input fields')
-        return
-    }
+export const fetchPutUpdate = async ({ formData, userId }) => {
     try {
         const response = await fetch(`${API_URL}/updates?user=${userId}`, {
             method: 'PUT',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ update_id, name, value, meta, created_at })
+            body: formData
         })
         return await response.json()
     } catch (err) {

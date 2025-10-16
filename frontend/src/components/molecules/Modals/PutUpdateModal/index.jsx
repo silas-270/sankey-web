@@ -72,7 +72,7 @@ const PutUpdateModal = ({ onClose, link, update }) => {
         })
 
         putUpdate(formData)
-        console.log(updates)
+        console.warn(inputs)
         handleOnClose()
     }
 

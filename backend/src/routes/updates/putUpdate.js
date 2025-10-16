@@ -4,29 +4,7 @@ import { deleteReceipt, uploadReceipt } from '../../services/minio/minio.js'
 
 const updateUpdate = async (updateData, imageFiles) => {
     // Destructure the required identifier and potential update fields
-    const { updateId, newName, newValue, prevMeta: prevMetaJson, newMeta: newMetaJson, newDate } = updateData
-
-    let prevMeta = {}
-    if (prevMetaJson && typeof prevMetaJson === 'string') {
-        try {
-            prevMeta = JSON.parse(prevMetaJson)
-        } catch (error) {
-            console.warn("Could not parse prevMeta JSON string. Using empty object.")
-        }
-    } else if (typeof prevMetaJson === 'object' && prevMetaJson !== null) {
-        prevMeta = prevMetaJson
-    }
-
-    let newMeta = {}
-    if (newMetaJson && typeof newMetaJson === 'string') {
-        try {
-            newMeta = JSON.parse(newMetaJson)
-        } catch (error) {
-            console.warn("Could not parse newMeta JSON string. Using empty object.")
-        }
-    } else if (typeof newMetaJson === 'object' && newMetaJson !== null) {
-        newMeta = newMetaJson
-    }
+    const { updateId, newName, newValue, prevMeta, newMeta, newDate } = updateData
 
     // IMAGE HANDELING
     // Collect missing Image ids in newMeta -> missing ids get deleted
