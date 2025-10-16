@@ -62,8 +62,8 @@ const PutUpdateModal = ({ onClose, link, update }) => {
             formData.append('created_at', formattedDate)
         }
         if (meta !== update.meta) {
-            formData.append('prev_meta', update.meta)
-            formData.append('new_meta', meta)
+            formData.append('prev_meta', JSON.stringify(update.meta))
+            formData.append('new_meta', JSON.stringify(meta))
         }
 
         // Append files using the key 'images'
@@ -71,7 +71,7 @@ const PutUpdateModal = ({ onClose, link, update }) => {
             formData.append('images', file)
         })
 
-        putUpdate(formData)
+        putUpdate({ formData })
         console.warn(inputs)
         handleOnClose()
     }

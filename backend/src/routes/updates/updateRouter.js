@@ -39,6 +39,7 @@ updateRouter.put('', upload, async (req, res) => {
         
         let prevMeta = req.body.prev_meta
         if (prevMeta && typeof prevMeta === 'string') {
+            console.log('prev Meta:', prevMeta)
             prevMeta = JSON.parse(prevMeta)
         } else {
             prevMeta = null
@@ -46,6 +47,7 @@ updateRouter.put('', upload, async (req, res) => {
 
         let newMeta = req.body.new_meta
         if (newMeta && typeof newMeta === 'string') {
+            console.log('new Meta:', newMeta)
             newMeta = JSON.parse(newMeta)
         } else {
             newMeta = null
