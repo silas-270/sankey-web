@@ -1,5 +1,6 @@
 import { Router } from 'express'
 import verifySession from '../../services/auth/verifySession.js'
+import multer from 'multer'
 
 import getLinks from './getLinks.js'
 import postLink from './postLink.js'
@@ -7,6 +8,9 @@ import putLink from './putLink.js'
 import deleteLink from './deleteLink.js'
 
 const linkRouter = Router({ mergeParams: true })
+
+const storage = multer.memoryStorage()
+const upload = multer({ storage: storage }).array('images', 5)
 
 "GET  localhost:3000/api/v1/links?user=test"
 linkRouter.get('', async (req, res) => {
@@ -26,7 +30,7 @@ linkRouter.get('', async (req, res) => {
 })
 
 "POST localhost:3000/api/v1/links?user=test"
-linkRouter.post('', async (req, res) => {
+linkRouter.post('', upload, async (req, res) => {
     try {
         const userId = req.query.user
         if(!verifySession(userId)) {
@@ -34,7 +38,8 @@ linkRouter.post('', async (req, res) => {
         }
 
         const { source, target, update } = req.body
-        const newLink = await postLink(userId, source, target, update)
+        const imageFiles = req.files
+        const newLink = await postLink(userId, source, target, update, imageFiles)
 
         return res.status(201).json(newLink)
     } catch (err) {

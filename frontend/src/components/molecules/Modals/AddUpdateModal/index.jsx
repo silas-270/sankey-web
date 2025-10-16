@@ -10,14 +10,15 @@ import styles from './AddUpdateModal.module.css'
 
 const AddUpdateModal = ({ onClose, link }) => {
     const { addUpdate } = useSankey()
+
     const [description, setDescription] = useState('')
     const [value, setValue] = useState('')
-    const [meta, setMeta] = useState(null)
+    const [filesArray, setFilesArray] = useState([])
 
     const handleOnClose = () => {
         setDescription('')
         setValue('')
-        setMeta(null)
+        setFilesArray([])
         onClose()
     }
 
@@ -27,15 +28,29 @@ const AddUpdateModal = ({ onClose, link }) => {
             link_id: link.id,
             name: description.trim(),
             value: formattedValue,
-            meta,
         }
         const { success, message } = validateUpdate(newUpdate)
         if (!success) {
             console.warn(message)
             return
         }
-        console.log(newUpdate)
-        addUpdate(newUpdate)
+
+        // Collect data
+        const formData = new FormData()
+
+        // Append text fields
+        formData.append('link_id', link.id)
+        formData.append('name', description.trim())
+        formData.append('value', formattedValue)
+        formData.append('meta', {})
+
+        // Append files using the key 'images'
+        filesArray.forEach((file) => {
+            formData.append('images', file)
+        })
+
+        addUpdate(formData)
+        console.warn(newUpdate)
         handleOnClose()
     }
 
@@ -69,6 +84,8 @@ const AddUpdateModal = ({ onClose, link }) => {
                 <FileUpload
                     style={{ height: '3.9rem' }}
                     hint='Upload Files'
+                    filesArray={filesArray}
+                    setFilesArray={setFilesArray}
                 />
                 <div className={styles.buttonBar}>
                     <TextButton

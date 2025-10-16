@@ -15,14 +15,6 @@ const UpdateNode = ({ update, link }) => {
         setExpanded((prev) => !prev)
     }
 
-    update.meta = {
-        images: [
-            { src: 'https://images.unsplash.com/photo-1757495152235-e6a79bcf7ea2?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxmZWF0dXJlZC1waG90b3MtZmVlZHw0fHx8ZW58MHx8fHx8&auto=format&fit=crop&q=60&w=500' },
-            { src: 'https://images.unsplash.com/photo-1758801305053-97e7e20fee3e?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxmZWF0dXJlZC1waG90b3MtZmVlZHwxMXx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=60&w=500' },
-            { src: 'https://images.unsplash.com/photo-1758944967067-bf0177898364?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxmZWF0dXJlZC1waG90b3MtZmVlZHwxNHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=60&w=500' }
-        ]
-    }
-
     return (
         <>
             <div className={styles.UpdateNodeWrapper}>

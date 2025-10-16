@@ -29,12 +29,14 @@ const diffInputs = (prevInputs, newInputs) => {
 
 const PutUpdateModal = ({ onClose, link, update }) => {
     const { putUpdate, delUpdate } = useSankey()
-    const [date, setDate] = useState(formatDateFromISO(update.created_at) || '')
+
     const [description, setDescription] = useState(update.name || '')
     const [value, setValue] = useState(update.value || '')
+    const [date, setDate] = useState(formatDateFromISO(update.created_at) || '')
     const [meta, setMeta] = useState(update.meta || {})
     const [showDanger, setShowDanger] = useState(false)
 
+    // Image Arrays
     const handleOnClose = () => {
         setDate('')
         setDescription('')

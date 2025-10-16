@@ -5,8 +5,6 @@ import validateLink from '@services/data/validateLink'
 import useSankey from '@services/hooks/useSankey'
 import Template from '../Template'
 import TextInput from '@atoms/TextInput'
-//import SuggestionInput from '@atoms/SuggestionInput'
-// RProblem with reredners
 import TextButton from '@atoms/TextButton'
 import styles from './PutLinkModal.module.css'
 
@@ -25,13 +23,14 @@ const diffInputs = (prevInputs, newInputs) => {
     return update
 }
 
-const PutLinkModal = ({ onClose, link, isTarget, nodeList }) => {
+const PutLinkModal = ({ onClose, link, isTarget }) => {
     const { putLink, delLink } = useSankey()
-    const graphData = useSankeyRawStore((state) => state.rawSankeyData)
+
+    const [connectingNode, setConnectingNode] = useState((isTarget ? link.source.id : link.target.id) || '')
     const [date, setDate] = useState(formatDateFromISO(link.created_at) || '')
     const [showDanger, setShowDanger] = useState(false)
-    const [connectingNode, setConnectingNode] = useState((isTarget ? link.source.id : link.target.id) || '')
 
+    const graphData = useSankeyRawStore((state) => state.rawSankeyData)
     const sourceNode = isTarget ? connectingNode : link.source.id
     const targetNode = isTarget ? link.target.id : connectingNode
 
@@ -102,7 +101,6 @@ const PutLinkModal = ({ onClose, link, isTarget, nodeList }) => {
                             value={connectingNode}
                             onChange={setConnectingNode}
                             placeholder={'Target Node'}
-                        //suggestions={nodeList}
                         />
                     </div>
                 </div>

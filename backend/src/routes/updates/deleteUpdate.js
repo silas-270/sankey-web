@@ -37,12 +37,14 @@ const deleteUpdate = async (updateId) => {
             })
 
             // 3. DELETE IMAGES FROM MINIO (CRITICAL: AWAIT)
-            const deletePromises = deleteKeys.map(key => {
+            const deletePromises = deleteKeys.map(async key => {
                 // Ignore errors for individual file deletion to ensure the DB row can still be removed
-                return deleteReceipt(key).catch(error => {
+                try {
+                    return await deleteReceipt(key)
+                } catch (error) {
                     console.error(`Warning: Failed to delete image key ${key} from MinIO. Orphaned file may exist.`, error)
                     return null
-                })
+                }
             })
 
             await Promise.all(deletePromises)

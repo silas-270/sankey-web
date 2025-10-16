@@ -5,8 +5,6 @@ import useSankey from '@services/hooks/useSankey'
 import Template from '../Template'
 import FileUpload from '@atoms/FileUpload'
 import TextInput from '@atoms/TextInput'
-//import SuggestionInput from '@atoms/SuggestionInput'
-// RProblem with reredners
 import TextButton from '@atoms/TextButton'
 import styles from './ConnectLinkModal.module.css'
 import { formatValue } from '@services/data/formatEntries'
@@ -19,20 +17,21 @@ const ConnectLinkModal = ({
     nodeList,
 }) => {
     const { addLink } = useSankey()
-    const graphData = useSankeyRawStore((state) => state.rawSankeyData)
-    const [connectingNode, setConnectingNode] = useState('')
-    const sourceNode = isTarget ? nodeId : connectingNode
-    const targetNode = isTarget ? connectingNode : nodeId
 
+    const [connectingNode, setConnectingNode] = useState('')
     const [description, setDescription] = useState('')
     const [value, setValue] = useState('')
-    const [meta, setMeta] = useState(null)
+    const [filesArray, setFilesArray] = useState([])
+
+    const graphData = useSankeyRawStore((state) => state.rawSankeyData)
+    const sourceNode = isTarget ? nodeId : connectingNode
+    const targetNode = isTarget ? connectingNode : nodeId
 
     const handleOnClose = () => {
         setConnectingNode('')
         setDescription('')
         setValue('')
-        setMeta(null)
+        setFilesArray([])
         onClose()
     }
 
@@ -44,7 +43,6 @@ const ConnectLinkModal = ({
             update: {
                 name: description.trim(),
                 value: formattedValue,
-                meta
             }
         }
         const { success, message } = validateLink(graphData, newLink)
@@ -52,8 +50,26 @@ const ConnectLinkModal = ({
             console.warn(message)
             return
         }
-        console.log(newLink)
-        addLink(newLink)
+
+        // Collect Data
+        const formData = new FormData()
+
+        // Append text fields
+        formData.append('source', sourceNode.trim())
+        formData.append('target', targetNode.trim())
+        formData.append('update', {
+            name: description.trim(),
+            value: formattedValue,
+            meta: {}
+        })
+
+        // Append files using the key 'images'
+        filesArray.forEach((file) => {
+            formData.append('images', file)
+        })
+
+        addLink(formData)
+        console.warn(newLink)
         handleOnClose()
     }
 
@@ -106,6 +122,8 @@ const ConnectLinkModal = ({
                 <FileUpload
                     style={{ height: '3.9rem' }}
                     hint='Upload Files'
+                    filesArray={filesArray}
+                    setFilesArray={setFilesArray}
                 />
                 <div className={styles.buttonBar}>
                     <TextButton

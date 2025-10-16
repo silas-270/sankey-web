@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import DiagramDisplay from '@templates/DiagramDisplay'
 import useSankeyRawStore from '@services/zustand/useSankeyRawStore'
 import Spinner from '@atoms/Spinner'
@@ -7,7 +7,6 @@ import ModalTemplate from '@molecules/Modals/Template'
 import useSankey from '@services/hooks/useSankey'
 import Tutorial from '@templates/Tutorial'
 import styles from './DiagramView.module.css'
-import TestUpload from '../../components/test'
 
 const DiagramView = () => {
     const { sankeyData, isLoading, error } = useSankey()
@@ -25,10 +24,6 @@ const DiagramView = () => {
     }
 
     console.log(sankeyData)
-
-    return (
-        <TestUpload />
-    )
 
     if (isLoading) { // REPLACE 'isLoading'
         return (
