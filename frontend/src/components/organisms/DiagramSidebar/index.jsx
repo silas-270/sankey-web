@@ -3,6 +3,7 @@ import useSankeyStore from '@services/zustand/useSankeyStore'
 import AddLinkButton from './AddLinkButton'
 import ConnectLinkModal from '@molecules/Modals/ConnectLinkModal'
 import LinkNode from './LinkNode'
+import NotesField from './NotesField'
 import styles from './DiagramSidebar.module.css'
 
 const DiagramSidebar = ({
@@ -16,6 +17,8 @@ const DiagramSidebar = ({
     const [showNewTargetModal, setShowNewTargetModal] = useState(false)
 
     const [selectedLink, setSelectedLink] = useState('')
+
+    const [notes, setNotes] = useState('')
 
     useEffect(() => {
         setSelectedLink('')
@@ -51,6 +54,13 @@ const DiagramSidebar = ({
                 </div>
                 <div>{`${nodeData.value.toFixed(2)}$`}</div>
             </div>
+
+            {/* Notes */}
+            <div className={styles.sectionHeadline}>Notes</div>
+            <NotesField
+                notes={notes}
+                setNotes={setNotes}
+            />
 
             {/* Sources */}
             <div className={styles.sectionHeadline}>Linked Sources</div>
