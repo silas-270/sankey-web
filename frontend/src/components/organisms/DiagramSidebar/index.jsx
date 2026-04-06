@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+
 import useSankeyStore from '@services/zustand/useSankeyStore'
 import AddLinkButton from './AddLinkButton'
 import ConnectLinkModal from '@molecules/Modals/ConnectLinkModal'
@@ -35,6 +36,8 @@ const DiagramSidebar = ({
             <div>Empty</div>
         )
     }
+
+    console.log(selectedLink)
 
     const targetLinks = nodeData.sourceLinks
     const sourceLinks = nodeData.targetLinks

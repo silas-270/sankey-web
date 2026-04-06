@@ -93,6 +93,8 @@
     display: flex;
     cursor: pointer;
     padding: 0;
+    width: 10rem;
+    box-sizing: border-box;
 }
 
 .nameValueWrapper:disabled {
@@ -104,6 +106,9 @@
     font-size: 1.2rem;
     color: var(--text);
     text-align: left;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .value {
